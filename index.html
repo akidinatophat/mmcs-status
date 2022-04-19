@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>MMCS Status</title>
+<link href="style.css" rel="stylesheet" type="text/css" media="all">    
+</head><body>
+<br>
+<center><h1>Madlads MC Server Status Page</h1></center>
+<div style="position: absolute;top: 50%;left: 50%;margin-top: -50px;margin-left: -50px;width: 100px;height: 100px;">
+    <table border="1" align="center">
+     <tr height="100%">
+      <td height="100%" width="100%" valign="middle" align="center">
+        <b id="serveris">Please wait...</b>
+        <br><br>
+        <p id="misc"></p>
+      </td>
+     </tr>
+    </table>
+    </div>
+<a style="position: absolute;right:0;bottom:0;" href="javascript:report()"><img src="https://cdn.discordapp.com/attachments/688931395653075025/965780559475380294/5c7afccca784365a.png" title="Report this status" height="50" width="50"></a>
+</body>
+<script>
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function report() {
+    let coment = prompt("Any comments before this status info is sent?")
+
+    const request = new XMLHttpRequest();
+      request.open("POST", "https://discord.com/api/webhooks/965781747545554954/dHouHBp--yJEfCZmPXpalslTtdoVZS17evyLO13VFfiTkW-xMBgH1JADyNyTbxY-VSdg");
+
+      request.setRequestHeader('Content-type', 'application/json');
+
+      const params = {
+        username: "Report",
+        avatar_url: "https://cdn.discordapp.com/attachments/688931395653075025/965780559475380294/5c7afccca784365a.png",
+        content: "Server Status: " + document.getElementById("serveris").innerHTML + "\nMisc Info: " + document.getElementById("misc").innerHTML + "\nComments from reporter: " + coment
+      }
+
+      request.send(JSON.stringify(params));
+}
+
+window.onload = async function() {
+try {
+  let response = await fetch('https://mcapi.us/server/status?ip=142.196.50.124');
+  let data = await response.text();
+  const obj = JSON.parse(data);
+  console.log(obj)
+  if (obj.online) {
+    document.getElementById("serveris").innerHTML = "The server is currently online.";
+    document.getElementById("misc").innerHTML = "Connected players: " + obj.players.now + "/" + obj.players.max;
+  } else {
+    document.getElementById("serveris").innerHTML = "The server is currently OFFLINE. Please contact carriethekid by clicking the exclamation button on the bottom right.";
+}
+  }
+catch(error) {
+alert("error! cannot connect to mcapi! please send the following to carrie, and any additional info by pressing f12 and clicking console: " + error)
+}
+}
+</script>
+</html>
