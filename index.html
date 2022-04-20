@@ -37,7 +37,9 @@ function report() {
         content: "Server Status: " + document.getElementById("serveris").innerHTML + "\nMisc Info: " + document.getElementById("misc").innerHTML + "\nComments from reporter: " + coment
       }
 
-      request.send(JSON.stringify(params));
+      if (coment != null) {
+      request.send(JSON.stringify(params));    
+      }         
 }
 
 window.onload = async function() {
